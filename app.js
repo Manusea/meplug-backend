@@ -24,6 +24,8 @@ app.use(express.json())
 app.use('/auths', AuthRoutes);
 
 
-
+app.get('/', (req, res) => {
+    res.json({message: 'Hello World!'})
+})
 
 app.listen(port,console.log("Listening on port: 127.0.0.1:",port))
