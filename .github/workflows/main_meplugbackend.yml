@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'meplugbackend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F15FE1618C05410A9AA102D51520F7FB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_97E333538C084810890FC83777895EDF }}
           package: .
