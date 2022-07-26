@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 const app = express()
 const port = 4000
 
-const AuthRoutes = require('./routes/Authentication')
+const AuthRoutes = require('./routes/Authentication');
+const UserRoutes = require('./routes/UserRoutes');
 
 dotenv.config();
 
@@ -22,10 +23,7 @@ app.use(express.json())
 
 
 app.use('/auths', AuthRoutes);
+app.use('/users', UserRoutes);
 
-
-app.get('/', (req, res) => {
-    res.json({message: 'Hello World!'})
-})
 
 app.listen(port,console.log("Listening on port: 127.0.0.1:",port))
