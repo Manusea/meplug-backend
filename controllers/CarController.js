@@ -1,5 +1,4 @@
-const getCarName = () => {
-    return car.name;
+const getCarName = async (req, res) => {
+    res.send("Cars");
 }
-
 module.exports = { getCarName };

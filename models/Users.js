@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema({
         min: 6,
         select: false
     },
+    balance: {
+        type: Number,
+        default: 0
+    },
     date: {
         type: Date,
         default: Date.now
