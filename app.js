@@ -7,6 +7,7 @@ const port = 4000
 
 const AuthRoutes = require('./routes/Authentication');
 const UserRoutes = require('./routes/UserRoutes');
+const CarRoutes = require('./routes/CarRoutes');
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.json())
 
 app.use('/auths', AuthRoutes);
 app.use('/users', UserRoutes);
+app.use('/cars', CarRoutes);
 
 
 app.listen(port,console.log("Listening on port: 127.0.0.1:",port))
