@@ -54,16 +54,9 @@
 const Cars = require("../models/Cars");
 
 const getCarName = async (req, res) => {
-  // var car_data = await Cars.find({});
-
-  // var result = [];
-  // for (var i = 0; i < mock_data.length; i++) {
-  //   if (car_data[i].name.indexOf(req.params.keyword) > -1)
-  //     result.push(car_data[i]);
-  // }
-  // res.send(result);
-
-  console.log(req.params.keyword);
+  let search = await Cars.find({name: {$regex: req.body.data.trim(), $options: "i"}});
+  search = search.slice(0, 10);
+  res.send(search);
 };
 
 
