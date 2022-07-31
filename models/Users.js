@@ -22,8 +22,14 @@ const UserSchema = new mongoose.Schema({
     },
     balance: {
         type: Number,
-        default: 0
+        default: 0.01
     },
+    transactions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Transaction',
+        default: []
+
+    }],
     date: {
         type: Date,
         default: Date.now

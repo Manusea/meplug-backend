@@ -5,4 +5,9 @@ const getUsers = async (req, res) => {
   res.send({success: true , user: users});
 };
 
-module.exports = { getUsers };
+const topup = async (req, res) => {
+  const user = await User.findOneAndUpdate({_id: req.body.id}, {$inc: {balance: req.body.balance}});
+  res.send({success: true , user: user});
+};
+
+module.exports = { getUsers, topup };
