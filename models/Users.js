@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     },
     balance: {
         type: Number,
-        default: 0.01
+        default: 0.00
     },
     transactions: [{
         type: mongoose.Schema.Types.ObjectId,
