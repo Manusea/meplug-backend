@@ -7,6 +7,12 @@ const UserSchema = new mongoose.Schema({
         max: 255,
         min: 6
     },
+    username: {
+        type: String,
+        required: true,
+        max: 255,
+        min: 6
+    },
     email: {
         type: String,
         required: true,
@@ -28,12 +34,16 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Transaction',
         default: []
-
     }],
     date: {
         type: Date,
         default: Date.now
     },
+    cars: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Car',
+        default: []
+    }]
 })
 
 module.exports = mongoose.model('User', UserSchema)
