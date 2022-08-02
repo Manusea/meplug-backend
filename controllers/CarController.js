@@ -56,9 +56,9 @@ const fetchCarDetails = (data) => {
 const getCarName = async (req, res) => {
   let search = await Cars.find({
     $or: [
-      { brand: { $regex: req.body.data.trim(), $options: "i" } },
-      { generation: { $regex: req.body.data.trim(), $options: "i" } },
-      { modification_engine: { $regex: req.body.data.trim(), $options: "i" } },
+      { brand: { $regex: req.body.data } },
+      { generation: { $regex: req.body.data } },
+      { modification_engine: { $regex: req.body.data } },
     ],
   }, { specs: 0 });
   search = search.slice(0, 10);
