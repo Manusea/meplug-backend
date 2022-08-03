@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
 
 const app = express()
 const port = 4000
@@ -21,6 +22,7 @@ db.once('open',()=>{
 })
 
 app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.use('/auths', AuthRoutes);
