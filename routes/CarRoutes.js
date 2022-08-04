@@ -5,6 +5,6 @@ var controller = require('../controllers/CarController');
 router.post('/', controller.getCarName);
 router.get('/fetch', controller.getCarData);
 router.post('/add', controller.addCarToUser);
-router.post('/uploads', controller.uploadImage);
+// router.post('/uploads', controller.uploadImage);
 
 module.exports = router;

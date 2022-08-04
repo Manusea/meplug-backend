@@ -1,28 +1,28 @@
 const axios = require("axios");
 const Cars = require("../models/Cars");
 const User = require("../models/Users");
-const multer = require("multer");
-const fs = require("fs");
+// const multer = require("multer");
+// const fs = require("fs");
 
 //Storage
-const Storage = multer.diskStorage({
-  destination: "uploads",
-  filename: function (req, file, cb) {
-    console.log(file);
-    cb(null, file.originalname);
-  },
-});
+// const Storage = multer.diskStorage({
+//   destination: "uploads",
+//   filename: function (req, file, cb) {
+//     console.log(file);
+//     cb(null, file.originalname);
+//   },
+// });
 
-const upload = multer({
-  storage: Storage,
-  limits: { fileSize: 1000000 },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-      return cb(new Error("Please upload an image"));
-    }
-    cb(undefined, true);
-  },
-});
+// const upload = multer({
+//   storage: Storage,
+//   limits: { fileSize: 1000000 },
+//   fileFilter(req, file, cb) {
+//     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+//       return cb(new Error("Please upload an image"));
+//     }
+//     cb(undefined, true);
+//   },
+// });
 
 const options = {
   method: "GET",
@@ -32,29 +32,29 @@ const options = {
   },
 };
 
-const uploadImage = async (req, res) => {
-  upload.single("image")(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ error: err.message });
-    }
-    const findCar = await Cars.findById(req.body.carId);
-    findCar.image = {
-      data: fs.readFileSync(req.file.path),
-      contentType: "image/png",
-    };
-    await findCar
-      .save()
-      .then(() => {
-        res.send("Image uploaded successfully");
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send("Error uploading image");
-      });
-  });
+// const uploadImage = async (req, res) => {
+//   upload.single("image")(req, res, async (err) => {
+//     if (err) {
+//       return res.status(400).json({ error: err.message });
+//     }
+//     const findCar = await Cars.findById(req.body.carId);
+//     findCar.image = {
+//       data: fs.readFileSync(req.file.path),
+//       contentType: "image/png",
+//     };
+//     await findCar
+//       .save()
+//       .then(() => {
+//         res.send("Image uploaded successfully");
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         res.status(500).send("Error uploading image");
+//       });
+//   });
 
-  console.log("Below upload");
-};
+//   console.log("Below upload");
+// };
 
 const getCarData = async (req, res) => {
   axios
@@ -125,4 +125,4 @@ const addCarToUser = async (req, res) => {
   res.send(user);
 };
 
-module.exports = { getCarName, getCarData, addCarToUser, uploadImage };
+module.exports = { getCarName, getCarData, addCarToUser };
