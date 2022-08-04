@@ -1,4 +1,5 @@
 const User = require("../models/Users");
+const Cars = require("../models/Cars");
 
 const getUsers = async (req, res) => {
   const users = await User.find({ _id: req.body.id }, { date: 0, __v: 0 });
@@ -13,4 +14,12 @@ const topup = async (req, res) => {
   res.send({ success: true, user: user });
 };
 
-module.exports = { getUsers, topup };
+const getUserCars = async (req, res) => {
+  const user = await User.findById(req.body.id);
+  if (!user) return res.status(400).send("User not found");
+
+  const cars = await Cars.find({ _id: { $in: user.cars } });
+  res.send(cars);
+}
+
+module.exports = { getUsers, topup, getUserCars };
