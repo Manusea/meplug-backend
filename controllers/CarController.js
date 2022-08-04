@@ -1,6 +1,28 @@
 const axios = require("axios");
 const Cars = require("../models/Cars");
 const User = require("../models/Users");
+const multer = require("multer");
+const fs = require("fs");
+
+//Storage
+const Storage = multer.diskStorage({
+  destination: "uploads",
+  filename: function (req, file, cb) {
+    console.log(file);
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: Storage,
+  limits: { fileSize: 1000000 },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Please upload an image"));
+    }
+    cb(undefined, true);
+  },
+});
 
 const options = {
   method: "GET",
@@ -8,6 +30,30 @@ const options = {
     "X-RapidAPI-Key": "2c494c6a62msh6702f97bca379f4p17f6fajsnf7ae539eccce",
     "X-RapidAPI-Host": "cars-specs-automotive-catalog.p.rapidapi.com",
   },
+};
+
+const uploadImage = async (req, res) => {
+  upload.single("image")(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    const findCar = await Cars.findById(req.body.carId);
+    findCar.image = {
+      data: fs.readFileSync(req.file.path),
+      contentType: "image/png",
+    };
+    await findCar
+      .save()
+      .then(() => {
+        res.send("Image uploaded successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error uploading image");
+      });
+  });
+
+  console.log("Below upload");
 };
 
 const getCarData = async (req, res) => {
@@ -43,6 +89,12 @@ const fetchCarDetails = (data) => {
             generation: data[i].generations[j].engines[k].generation,
             modification_engine:
               data[i].generations[j].engines[k].modification_engine,
+            fullname:
+              data[i].generations[j].engines[k].brand +
+              " " +
+              data[i].generations[j].engines[k].generation +
+              " " +
+              data[i].generations[j].engines[k].modification_engine,
             specs:
               data[i].generations[j].engines[k].electric_cars_and_hybrids_specs,
           });
@@ -54,13 +106,9 @@ const fetchCarDetails = (data) => {
 };
 
 const getCarName = async (req, res) => {
-  let search = await Cars.find({
-    $or: [
-      { brand: { $regex: req.body.data } },
-      { generation: { $regex: req.body.data } },
-      { modification_engine: { $regex: req.body.data } },
-    ],
-  }, { specs: 0 });
+  let search = await Cars.find({ fullname: { $regex: req.body.data.trim() } },
+    { specs: 0 }
+  );
   search = search.slice(0, 10);
   res.send(search);
 };
@@ -75,8 +123,6 @@ const addCarToUser = async (req, res) => {
   user.cars.push(car);
   await user.save();
   res.send(user);
-}
+};
 
-
-
-module.exports = { getCarName, getCarData, addCarToUser };
+module.exports = { getCarName, getCarData, addCarToUser, uploadImage };

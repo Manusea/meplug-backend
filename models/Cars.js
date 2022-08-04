@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 
 const CarSchema = new mongoose.Schema({
+    fullname: {
+        type: String,
+        required: true,
+        max: 255,
+        min: 6
+    },
     brand: {
         type: String,
         required: true,
@@ -23,6 +29,10 @@ const CarSchema = new mongoose.Schema({
         type: Object,
         required: true,
     },
+    image: {
+        data: Buffer,
+        contentType: String
+    }
 })
 
 module.exports = mongoose.model('Car', CarSchema)
