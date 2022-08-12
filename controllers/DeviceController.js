@@ -13,10 +13,10 @@ const getData = (req, res) => {
     });
 };
 
-const sendHour = (req, res) => {
+const sendCode = (req, res) => {
   axios
     .put(
-      "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01.json",
+      "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01-Verification.json",
       req.body
     )
     .then(function (response) {
@@ -26,4 +26,15 @@ const sendHour = (req, res) => {
       console.error(error);
     });
 };
-module.exports = { getData, sendHour };
+
+const getAuth = (req, res) => {
+  axios
+    .get(
+      "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01-Verification.json"
+    ).then(function (response) {
+      res.send(response.data.VerificationqrId);
+    }).catch(function (error) {
+      console.error(error);
+    });
+};
+module.exports = { getData, sendCode, getAuth };

@@ -3,6 +3,7 @@ var router = express.Router();
 var controller = require('../controllers/DeviceController');
 
 router.get('/data', controller.getData);
-router.post('/sendHour', controller.sendHour);
+router.put('/sendCode', controller.sendCode);
+router.get('/auth', controller.getAuth);
 
 module.exports = router;
