@@ -9,6 +9,7 @@ const port = 4000;
 const AuthRoutes = require("./routes/Authentication");
 const UserRoutes = require("./routes/UserRoutes");
 const CarRoutes = require("./routes/CarRoutes");
+const DeviceRoutes = require("./routes/DeviceRoutes");
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auths", AuthRoutes);
 app.use("/users", UserRoutes);
 app.use("/cars", CarRoutes);
+app.use("/devices", DeviceRoutes);
 
 app.get("/", (req, res) => {
   res.send("Meplug Backend Running");
