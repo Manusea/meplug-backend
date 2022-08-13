@@ -22,4 +22,26 @@ const getUserCars = async (req, res) => {
   res.send(cars);
 }
 
-module.exports = { getUsers, topup, getUserCars };
+//Add data to charging object
+const addCharging = async (req, res) => {
+  console.log(req.body);
+  const user = await User.findById(req.body.id);
+  if (!user) return res.status(400).send("User not found");
+
+  // const charging = {
+  //   duration: req.body.hours,
+  //   mode: req.body.mode,
+  //   selectedCar: req.body.selectedCar,
+  //   startDate: req.body.startDate,
+  //   endDate: req.body.endDate,
+  //   startTime: req.body.startTime,
+  //   endTime: req.body.endTime,
+  // };
+  // user.charging = charging;
+  // await user.save();
+  // res.send({ success: true, user: user });
+}
+
+
+
+module.exports = { getUsers, topup, getUserCars, addCharging };

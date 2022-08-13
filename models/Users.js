@@ -43,7 +43,11 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Car',
         default: []
-    }]
+    }],
+    charging: {
+        type: Object,
+        default: {}
+    }
 })
 
 module.exports = mongoose.model('User', UserSchema)

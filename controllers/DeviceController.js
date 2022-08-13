@@ -37,4 +37,18 @@ const getAuth = (req, res) => {
       console.error(error);
     });
 };
-module.exports = { getData, sendCode, getAuth };
+
+const sendHour = (req, res) => {
+  axios
+    .put(
+      "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01-Hour.json",
+      req.body
+    )
+    .then(function (response) {
+      res.send(response.data);
+    }).catch(function (error) {
+      console.error(error);
+    }
+    );
+}
+module.exports = { getData, sendCode, getAuth, sendHour };
