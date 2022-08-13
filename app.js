@@ -10,6 +10,7 @@ const AuthRoutes = require("./routes/Authentication");
 const UserRoutes = require("./routes/UserRoutes");
 const CarRoutes = require("./routes/CarRoutes");
 const DeviceRoutes = require("./routes/DeviceRoutes");
+const PropertyRoutes = require("./routes/PropertyRoutes");
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/auths", AuthRoutes);
 app.use("/users", UserRoutes);
 app.use("/cars", CarRoutes);
 app.use("/devices", DeviceRoutes);
+app.use("/properties", PropertyRoutes);
 
 app.get("/", (req, res) => {
   res.send("Meplug Backend Running");
