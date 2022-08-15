@@ -63,23 +63,30 @@ const addCharging = async (req, res) => {
   const user = await User.findById(req.body.id);
   if (!user) return res.status(400).send("User not found");
 
-  const startTime = new Date();
-  const endTime = new Date(startTime.getTime() + req.body.duration * 60000);
+  // const startTime = new Date();
+  // const endTime = new Date(startTime.getTime() + req.body.duration * 60000);
 
-  const startTimeFormat = lastDateFormat(startTime);
-  const endTimeFormat = lastDateFormat(endTime);
+  // const startTimeFormat = lastDateFormat(startTime);
+  // const endTimeFormat = lastDateFormat(endTime);
 
-  const startDate = startTimeFormat.split("T")[0];
-  const startT =
-    startTimeFormat.split("T")[1].split(":")[0] +
-    ":" +
-    startTimeFormat.split("T")[1].split(":")[1];
+  // const startDate = startTimeFormat.split("T")[0];
+  // const startT =
+  //   startTimeFormat.split("T")[1].split(":")[0] +
+  //   ":" +
+  //   startTimeFormat.split("T")[1].split(":")[1];
 
-  const endDate = endTimeFormat.split("T")[0];
-  const endT =
-    endTimeFormat.split("T")[1].split(":")[0] +
-    ":" +
-    endTimeFormat.split("T")[1].split(":")[1];
+  // const endDate = endTimeFormat.split("T")[0];
+  // const endT =
+  //   endTimeFormat.split("T")[1].split(":")[0] +
+  //   ":" +
+  //   endTimeFormat.split("T")[1].split(":")[1];
+
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+  let startT = req.body.startTime;
+  startT = startT.split(":")[0] + ":" + startT.split(":")[1];
+  let endT = req.body.endTime;
+  endT = endT.split(":")[0] + ":" + endT.split(":")[1];
 
   const charging = {
     duration: req.body.duration,
@@ -91,8 +98,7 @@ const addCharging = async (req, res) => {
     endTime: endT,
     location: req.body.location,
     deviceId: req.body.deviceId,
-    startDateLocal: startTime,
-    endDateLocal: endTime,
+    startTimeFormat: req.body.startTimeFormat,
   };
   user.charging = charging;
   await user.save();
@@ -120,22 +126,20 @@ const endCharging = async (req, res) => {
   const user = await User.findById(req.body.id);
   if (!user) return res.status(400).send("User not found");
 
-  const startDate = user.charging.startDateLocal;
-  const nowDate = new Date();
+  const startTime = user.charging.startTimeFormat;
+  const nowTime = req.body.nowTimeFormat;
 
-  const diff = nowDate.getTime() - startDate.getTime();
+  const nowDateLocal = req.body.nowDate;
+  let nowTimeLocal = req.body.nowTime;
+  nowTimeLocal = nowTimeLocal.split(":")[0] + ":" + nowTimeLocal.split(":")[1];
+
+  const diff = nowTime - startTime;
 
   const diffSeconds = Math.floor(diff / 1000);
 
-  //add startDate and nowDate to charging object
-  const startDateFormat = lastDateFormat(startDate);
-  const nowDateFormat = lastDateFormat(nowDate);
+  user.charging.nowDateLocal = nowDateLocal;
 
-  user.charging.startDateLocal = startDateFormat.split("T")[0];
-  user.charging.nowDateLocal = nowDateFormat.split("T")[0];
-
-  user.charging.startTime = startDateFormat.split("T")[1].split(":")[0] + ":" + startDateFormat.split("T")[1].split(":")[1];
-  user.charging.nowTime = nowDateFormat.split("T")[1].split(":")[0] + ":" + nowDateFormat.split("T")[1].split(":")[1];
+  user.charging.nowTime = nowTimeLocal;
 
   user.charging.duration = diffSeconds;
 
@@ -168,7 +172,7 @@ const withdraw = async (req, res) => {
     return res.status(400).send("Insufficient balance");
   user.balance -= req.body.balance;
   await user.save();
-  res.send({user: [user] });
+  res.send({ user: [user] });
 };
 
 module.exports = {
