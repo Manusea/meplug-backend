@@ -51,4 +51,6 @@ const sendHour = (req, res) => {
     }
     );
 }
+
+
 module.exports = { getData, sendCode, getAuth, sendHour };
