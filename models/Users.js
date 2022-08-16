@@ -58,6 +58,10 @@ const UserSchema = new mongoose.Schema({
       default: {},
     },
   ],
+  state: {
+    type: String,
+    default: "Idle",
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);

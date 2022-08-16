@@ -101,6 +101,7 @@ const addCharging = async (req, res) => {
     startTimeFormat: req.body.startTimeFormat,
   };
   user.charging = charging;
+  user.state = "charging";
   await user.save();
   res.send(user.charging);
 };
@@ -143,6 +144,8 @@ const endCharging = async (req, res) => {
 
   user.charging.duration = diffSeconds;
 
+  user.state = "payment";
+
   //merge charging and req.body.device object
   const device = req.body.device;
   const newDevice = {
@@ -171,6 +174,7 @@ const withdraw = async (req, res) => {
   if (user.balance < req.body.balance)
     return res.status(400).send("Insufficient balance");
   user.balance -= req.body.balance;
+  user.state = "Idle";
   await user.save();
   res.send({ user: [user] });
 };

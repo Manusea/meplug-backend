@@ -33,25 +33,22 @@ const getAuth = async (req, res) => {
     .get(
       "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01.json"
     )
-    .then(function (response) {
+    .then(async function (response) {
       status = response.data.StatusPlug;
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
-  
-  console.log(status);
-  axios
-    .get(
-      "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01-Verification.json"
-    )
-    .then(function (response) {
-      if(status === "Ready") {
-        res.send(response.data.VerificationqrId);
-      } else {
-        res.send(false);
-      }
-      
+      await axios
+        .get(
+          "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01-Verification.json"
+        )
+        .then(function (response) {
+          if (status === "Ready") {
+            res.send(response.data.VerificationqrId);
+          } else {
+            res.send(false);
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
     })
     .catch(function (error) {
       console.error(error);
