@@ -88,10 +88,12 @@ const addCharging = async (req, res) => {
   let endT = req.body.endTime;
   endT = endT.split(":")[0] + ":" + endT.split(":")[1];
 
+  console.log("Car: ",  req.body.selectedCar)
+
   const charging = {
     duration: req.body.duration,
     mode: req.body.mode,
-    selectedCar: req.body.selectedCar,
+    selectedCar: req.body.selectCar,
     startDate: startDate,
     endDate: endDate,
     startTime: startT,
