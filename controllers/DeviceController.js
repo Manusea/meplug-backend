@@ -27,13 +27,33 @@ const sendCode = (req, res) => {
     });
 };
 
-const getAuth = (req, res) => {
+const getAuth = async (req, res) => {
+  let status = "";
+  await axios
+    .get(
+      "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01.json"
+    )
+    .then(function (response) {
+      status = response.data.StatusPlug;
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+  
+  console.log(status);
   axios
     .get(
       "https://esp32-firebase-demo-398f6-default-rtdb.firebaseio.com/ME01-Verification.json"
-    ).then(function (response) {
-      res.send(response.data.VerificationqrId);
-    }).catch(function (error) {
+    )
+    .then(function (response) {
+      if(status === "Ready") {
+        res.send(response.data.VerificationqrId);
+      } else {
+        res.send(false);
+      }
+      
+    })
+    .catch(function (error) {
       console.error(error);
     });
 };
@@ -46,11 +66,10 @@ const sendHour = (req, res) => {
     )
     .then(function (response) {
       res.send(response.data);
-    }).catch(function (error) {
+    })
+    .catch(function (error) {
       console.error(error);
-    }
-    );
-}
-
+    });
+};
 
 module.exports = { getData, sendCode, getAuth, sendHour };
