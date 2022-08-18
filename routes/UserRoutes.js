@@ -9,5 +9,6 @@ router.post('/getCars', controller.getUserCars);
 router.post('/addCharging', controller.addCharging);
 router.post('/getCharging', controller.getCharging);
 router.post('/endCharging', controller.endCharging);
+router.post('/getHistory', controller.getUserHistory);
 
 module.exports = router;

@@ -85,6 +85,7 @@ const addCharging = async (req, res) => {
     location: req.body.location,
     deviceId: req.body.deviceId,
     startTimeFormat: req.body.startTimeFormat,
+    endDateFormat: req.body.endDateFormat,
   };
   user.charging = charging;
   user.state = "charging";
@@ -129,6 +130,8 @@ const endCharging = async (req, res) => {
 
   user.charging.duration = diffSeconds;
 
+  user.charging.nowDateFormat = req.body.nowDateFormat;
+
   user.state = "payment";
 
   //merge charging and req.body.device object
@@ -165,6 +168,16 @@ const withdraw = async (req, res) => {
   res.send({ user: [user] });
 };
 
+const getUserHistory = async (req, res) => {
+  const user = await User.findById(req.body.id);
+  if (!user) return res.status(400).send("User not found");
+
+  const history = user.history;
+  //check if history is empty
+  if (history.length === 0) return res.send({});
+  res.send(history);
+};
+
 module.exports = {
   getUsers,
   topup,
@@ -173,4 +186,5 @@ module.exports = {
   addCharging,
   getCharging,
   endCharging,
+  getUserHistory,
 };
